@@ -3,7 +3,7 @@
 
 
 def print_square(size):
-     """prints a square of #
+    """prints a square of #
 
     Args:
         size: the size in int of one side of the square
@@ -18,4 +18,4 @@ def print_square(size):
 
     for i in range(size):
         [print("#", end="") for j in range(size)]
-        print()
+        print()"""the print square module"""
