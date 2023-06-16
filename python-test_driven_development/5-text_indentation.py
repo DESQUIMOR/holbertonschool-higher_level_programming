@@ -1,26 +1,20 @@
 #!/usr/bin/python3
-"""
-    Text Indention module
-    """
+
+
+'''
+   5-text_indentation
+   Contains a function that adds new line after characters
+'''
 
 
 def text_indentation(text):
-    """
-    print text
-    2 new lines after each of these characters: ., ? and :
-    Args:
-        text (str): text
-    Raise
-        TypeError: when text is not str
-    """
-    if type(text) is not str:
-        raise TypeError("text must be a string")
-    a = 0
-    while a < len(text):
-        if text[a] in [':', '.', '?']:
-            print(text[a])
-            print()
-            a += 1
-        else:
-            print(text[a], end='')
-        a += 1
+    '''Python function to add two new lines to string at character points'''
+    if not isinstance(text, str):
+        raise TypeError('text must be a string')
+    period = text.replace('.', '.\n\n')
+    period = period.replace('?', '?\n\n')
+    period = period.replace(':', ':\n\n')
+    period1 = period.split('\n')
+    for line in range(len(period1)):
+        print("{}".format(period1[line].strip()),
+              end=("" if (line == (len(period1) - 1)) else '\n'))
