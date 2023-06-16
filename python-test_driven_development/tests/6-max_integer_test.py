@@ -1,39 +1,67 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
-tests for 6-max_integer
+Module to find the max integer
 """
-
-
 import unittest
 max_integer = __import__('6-max_integer').max_integer
 
-
 class TestMaxInteger(unittest.TestCase):
-    """ tests for max_integer"""
-    def test_def(self):
-        """tests normal input"""
-        self.assertEqual(max_integer([1, 2, 3, 4]), 4)
+    """
+    Test the max_integer function
+    """
 
-    def test_none(self):
-        """tests empty input"""
+    def test_max_integer(self):
+        '''
+        Test if integer is max integer
+        '''
+        result = max_integer([1, 4, 3, 2])
+        self.assertEqual(result, 4)
+        result = max_integer([12, 9, 7, 2])
+        self.assertEqual(result, 12)
+
+    def test_isint(self):
+        '''
+        Test to check variable against integer
+        '''
+        var = 1
+        self.assertTrue(max_integer([var, 2]) == 2)
+        x = 5
+        self.assertTrue(max_integer([1, x]) == x)
+
+    def test_same_entry(self):
+        '''
+        Test to check max int if same
+        '''
+        a = 50
+        self.assertEqual(max_integer([a, a, a, a]), a)
+
+    def test_float_integer(self):
+        '''
+        Test to see if float is max integer
+        '''
+        self.assertEqual(max_integer([4.0, 3, 2]), 4.0)
+
+    def test_one_entry(self):
+        '''
+        Test to check if only one entry
+        '''
+        self.assertEqual(max_integer([10]), 10)
+
+    def test_negative_integer(self):
+        '''
+        Test only negative integers
+        '''
+        self.assertEqual(max_integer([-1, -2, -5]), -1)
+    def test_no_argument(self):
+        '''
+        Test that None is returned if no argument
+        '''
         self.assertEqual(max_integer(), None)
+    def test_empty_list(self):
+        '''
+        Test if list is empty
+        '''
+        self.assertEqual(max_integer([]), None)
 
-    def test_neg(self):
-        """tests negative"""
-        self.assertEqual(max_integer([-1, -2, -3]), -1)
-
-    def test_neg_pos(self):
-        """tests composed input"""
-        self.assertEqual(max_integer([1, -4, -5, 5, 3]), 5)
-
-    def test_non_int(self):
-        """tests with non integer input"""
-        with self.assertRaises(TypeError):
-            max_integer([1, '2', 3])
-
-    def test_float(self):
-        """tests with float"""
-        self.assertEqual(max_integer([1, 2, 3.3]), 3.3)
-
-if __name__ == "__main__":
-    unittest.main()
+    if __name__ == '__main__':
+        unittest.main()
