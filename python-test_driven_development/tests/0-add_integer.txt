@@ -1,45 +1,66 @@
-The ``add_integer`` module
+The ``add_ integer`` module
 ======================
 
-Using ``add``
--------------------
+using ``add_integer``
 
-Write a function that adds 2 integers.
+----------------------
 
-    Prototype: def add_integer(a, b=98):
-    a and b must be integers or floats, otherwise raise a TypeError exception with the message a must be an integer or b must be an integer
-    a and b must be first casted to integers if they are float
-    Returns an integer: the addition of a and b
-    You are not allowed to import any module
+Importing the module
+    >>> add_integer = __import__("0-add_integer").add_integer
 
->>> add_integer = __import__('0-add_integer').add_integer
->>> add_integer(3, 5)
-8
->>> add_integer(3.5, 5)
-8
->>> add_integer(3, 5.5)
-8
->>> add_integer(3.5, 5.5)
-8
->>> add_integer("3", 5)
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "<stdin>", line 3, in add_integer
-TypeError: a must be an integer
->>> add_integer(3, "5")
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "<stdin>", line 5, in add_integer
-TypeError: b must be an integer
->>> add_integer("3", "5")
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "<stdin>", line 3, in add_integer
-TypeError: a must be an integer
->>> a = float("inf")
->>> b = 10
->>> add_integer(a, b)
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "<stdin>", line 8, in add_integer
-OverflowError: cannot convert float infinity to integer
+Checking module Docstring
+    >>> c = __import__("0-add_integer").__doc__
+    >>> len(c) > 1
+    True
+
+Testing Normal Addition
+    >>> add_integer(1, 5)
+    6
+
+Testing Negative Number
+    >>> add_integer(100, -5)
+    95
+
+Testing The default Variable b= 98
+    >>> add_integer(2)
+    100
+
+Testing Emty args Raise Error
+    >>> add_integer()
+    Traceback (most recent call last):
+    ...
+    TypeError: add_integer() missing 1 required positional argument: 'a'
+
+Testing A float Return int
+    >>> add_integer(100.3, -2)
+    98
+
+Testing  not int variable for b
+    >>> add_integer(2, "Holberton")
+    Traceback (most recent call last):
+    ...
+    TypeError: b must be an integer
+
+Testing  not int variable for a
+    >>> add_integer("school", 10)
+    Traceback (most recent call last):
+    ...
+    TypeError: a must be an integer
+
+Testing with more than 2 args
+    >>> add_integer(5, 2, 3)
+    Traceback (most recent call last):
+    ...
+    TypeError: add_integer() takes from 1 to 2 positional arguments but 3 were given
+
+Testing float  overflow
+    >>> add_integer(1, float('inf'))
+	Traceback (most recent call last):
+	...
+	OverflowError: cannot convert float infinity to integer
+
+Testing Nan
+	 >>> add_integer(1, float('nan'))
+	 Traceback (most recent call last):
+	 ...
+	 ValueError: cannot convert float NaN to integer
