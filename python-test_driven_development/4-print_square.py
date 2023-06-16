@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""the print square module"""
+"""the square module"""
 
 
 def print_square(size):
@@ -10,4 +10,4 @@ def print_square(size):
 
     for i in range(size):
         [print("#", end="") for j in range(size)]
-        print()"""the print square module"""
+        print()
