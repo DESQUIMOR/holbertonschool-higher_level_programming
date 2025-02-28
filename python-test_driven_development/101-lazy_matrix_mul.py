@@ -19,12 +19,17 @@ def lazy_matrix_mul(m_a, m_b):
     Raises:
         ValueError: If matrices cannot be multiplied
     """
-    # Check for empty rows specifically to handle the correct error message
+    # Check for empty rows in the first matrix
     if isinstance(m_a, list) and len(m_a) == 1 and isinstance(m_a[0], list) and len(m_a[0]) == 0:
         if isinstance(m_b, list) and len(m_b) > 0 and isinstance(m_b[0], list) and len(m_b[0]) > 0:
             raise ValueError(f"shapes (1,0) and ({len(m_b)},{len(m_b[0])}) not aligned: 0 (dim 1) != {len(m_b)} (dim 0)")
     
-    # If not capturing the special empty row case, proceed with normal matmul
+    # Check for empty rows in the second matrix
+    if isinstance(m_b, list) and len(m_b) == 1 and isinstance(m_b[0], list) and len(m_b[0]) == 0:
+        if isinstance(m_a, list) and len(m_a) > 0 and isinstance(m_a[0], list) and len(m_a[0]) > 0:
+            raise ValueError(f"shapes ({len(m_a)},{len(m_a[0])}) and (1,0) not aligned: {len(m_a[0])} (dim 1) != 1 (dim 0)")
+    
+    # If not capturing the special empty row cases, proceed with normal matmul
     try:
         return np.matmul(m_a, m_b)
     except ValueError as e:
