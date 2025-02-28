@@ -18,6 +18,7 @@ def lazy_matrix_mul(m_a, m_b):
 
     Raises:
         ValueError: If matrices cannot be multiplied
+        TypeError: If invalid data types are used
     """
     # Check for empty rows in the first matrix
     if isinstance(m_a, list) and len(m_a) == 1 and isinstance(m_a[0], list) and len(m_a[0]) == 0:
@@ -29,7 +30,18 @@ def lazy_matrix_mul(m_a, m_b):
         if isinstance(m_a, list) and len(m_a) > 0 and isinstance(m_a[0], list) and len(m_a[0]) > 0:
             raise ValueError(f"shapes ({len(m_a)},{len(m_a[0])}) and (1,0) not aligned: {len(m_a[0])} (dim 1) != 1 (dim 0)")
     
-    # If not capturing the special empty row cases, proceed with normal matmul
+    # Check for non-numeric elements
+    if isinstance(m_a, list) and all(isinstance(row, list) for row in m_a):
+        for row in m_a:
+            if any(not isinstance(item, (int, float)) for item in row):
+                raise TypeError("invalid data type for einsum")
+                
+    if isinstance(m_b, list) and all(isinstance(row, list) for row in m_b):
+        for row in m_b:
+            if any(not isinstance(item, (int, float)) for item in row):
+                raise TypeError("invalid data type for einsum")
+    
+    # If not capturing the special cases, proceed with normal matmul
     try:
         return np.matmul(m_a, m_b)
     except ValueError as e:
