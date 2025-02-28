@@ -14,7 +14,7 @@ def lazy_matrix_mul(m_a, m_b):
         m_b (list of lists of ints/floats): Second matrix.
     
     Returns:
-        list of lists of ints/floats: Resulting matrix.
+        NumPy ndarray: Resulting matrix.
     
     Raises:
         TypeError: If m_a or m_b is not a list of lists of integers/floats.
@@ -37,6 +37,6 @@ def lazy_matrix_mul(m_a, m_b):
     if len(set(len(row) for row in m_b)) > 1:
         raise TypeError("each row of m_b must be of the same size")
     try:
-        return np.matmul(m_a, m_b).tolist()
+        return np.matmul(m_a, m_b)
     except ValueError:
-        raise TypeError("Scalar operands are not allowed, use '*' instead")
+        raise ValueError("m_a and m_b can't be multiplied")
