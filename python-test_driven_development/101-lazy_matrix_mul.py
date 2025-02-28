@@ -41,12 +41,25 @@ def lazy_matrix_mul(m_a, m_b):
             if any(not isinstance(item, (int, float)) for item in row):
                 raise TypeError("invalid data type for einsum")
     
+    # Check for irregular shaped matrices (not all rows have same number of columns)
+    if isinstance(m_a, list) and all(isinstance(row, list) for row in m_a) and len(m_a) > 0:
+        row_lengths = [len(row) for row in m_a]
+        if len(set(row_lengths)) > 1:
+            raise ValueError("setting an array element with a sequence.")
+            
+    if isinstance(m_b, list) and all(isinstance(row, list) for row in m_b) and len(m_b) > 0:
+        row_lengths = [len(row) for row in m_b]
+        if len(set(row_lengths)) > 1:
+            raise ValueError("setting an array element with a sequence.")
+    
     # If not capturing the special cases, proceed with normal matmul
     try:
         return np.matmul(m_a, m_b)
     except ValueError as e:
         if "shapes" in str(e):
             raise ValueError(str(e))
+        elif "setting an array element with a sequence" in str(e):
+            raise ValueError("setting an array element with a sequence.")
         else:
             raise ValueError("Scalar operands are not allowed, use '*' instead")
     except TypeError:
