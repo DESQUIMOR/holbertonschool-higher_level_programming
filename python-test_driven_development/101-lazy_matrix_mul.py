@@ -31,7 +31,11 @@ def lazy_matrix_mul(m_a, m_b):
         result = np.matmul(m_a, m_b)
         return result
     except ValueError as e:
-        # Re-raise ValueError with custom message if it's our specific case
+        # Handle scalar case specifically
         if str(e) == "Scalar operands are not allowed, use '*' instead":
             raise ValueError("Scalar operands are not allowed, use '*' instead") from e
+        # Pass through NumPy's shape mismatch error message
+        elif "shapes" in str(e) and "not aligned" in str(e):
+            raise ValueError(str(e)) from e
+        # Default case for other invalid inputs
         raise ValueError("matrices cannot be multiplied") from e
