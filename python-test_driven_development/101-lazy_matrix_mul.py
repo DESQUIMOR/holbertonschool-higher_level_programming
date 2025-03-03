@@ -52,6 +52,21 @@ def lazy_matrix_mul(m_a, m_b):
         if len(set(row_lengths)) > 1:
             raise ValueError("setting an array element with a sequence.")
     
+    # Check for matrices that cannot be multiplied because of shape mismatch
+    if (isinstance(m_a, list) and isinstance(m_b, list) and
+        len(m_a) > 0 and len(m_b) > 0 and
+        all(isinstance(row, list) for row in m_a) and all(isinstance(row, list) for row in m_b)):
+        
+        # Get shapes
+        rows_a = len(m_a)
+        cols_a = len(m_a[0]) if rows_a > 0 and len(m_a[0]) > 0 else 0
+        rows_b = len(m_b)
+        cols_b = len(m_b[0]) if rows_b > 0 and len(m_b[0]) > 0 else 0
+        
+        # Check if matrices can be multiplied
+        if cols_a != rows_b:
+            raise ValueError(f"shapes ({rows_a},{cols_a}) and ({rows_b},{cols_b}) not aligned: {cols_a} (dim 1) != {rows_b} (dim 0)")
+    
     # If not capturing the special cases, proceed with normal matmul
     try:
         return np.matmul(m_a, m_b)
