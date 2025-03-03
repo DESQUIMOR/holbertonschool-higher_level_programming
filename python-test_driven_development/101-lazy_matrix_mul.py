@@ -17,64 +17,65 @@ def lazy_matrix_mul(m_a, m_b):
         numpy.ndarray: Result of matrix multiplication
 
     Raises:
-        TypeError: If m_a or m_b is not a list or list of lists
         ValueError: If matrices cannot be multiplied
+        TypeError: If invalid data types are used
     """
-    # Check if m_a is a list
-    if not isinstance(m_a, list):
-        raise TypeError("m_a must be a list")
-
-    # Check if m_b is a list
-    if not isinstance(m_b, list):
-        raise TypeError("m_b must be a list")
-
-    # Check if m_a is a list of lists
-    if not all(isinstance(row, list) for row in m_a):
-        raise TypeError("m_a must be a list of lists")
-
-    # Check if m_b is a list of lists
-    if not all(isinstance(row, list) for row in m_b):
-        raise TypeError("m_b must be a list of lists")
-
-    # Check if m_a is empty
-    if len(m_a) == 0 or any(len(row) == 0 for row in m_a):
-        raise ValueError("m_a can't be empty")
-
-    # Check if m_b is empty
-    if len(m_b) == 0 or any(len(row) == 0 for row in m_b):
-        raise ValueError("m_b can't be empty")
-
-    # Check if all elements in m_a are integers or floats
-    for row in m_a:
-        if not all(isinstance(elem, (int, float)) for elem in row):
-            raise TypeError("m_a should contain only integers or floats")
-
-    # Check if all elements in m_b are integers or floats
-    for row in m_b:
-        if not all(isinstance(elem, (int, float)) for elem in row):
-            raise TypeError("m_b should contain only integers or floats")
-
-    # Check if m_a is a rectangle (all rows have the same size)
-    if len(set(len(row) for row in m_a)) > 1:
-        raise TypeError("each row of m_a must be of the same size")
-
-    # Check if m_b is a rectangle (all rows have the same size)
-    if len(set(len(row) for row in m_b)) > 1:
-        raise TypeError("each row of m_b must be of the same size")
-
-    # Check if matrices can be multiplied (columns of m_a = rows of m_b)
-    if len(m_a[0]) != len(m_b):
-        raise ValueError("m_a and m_b can't be multiplied")
-
-    # All checks passed, perform matrix multiplication
+    # Check for empty rows in the first matrix
+    if isinstance(m_a, list) and len(m_a) == 1 and isinstance(m_a[0], list) and len(m_a[0]) == 0:
+        if isinstance(m_b, list) and len(m_b) > 0 and isinstance(m_b[0], list) and len(m_b[0]) > 0:
+            raise ValueError(f"shapes (1,0) and ({len(m_b)},{len(m_b[0])}) not aligned: 0 (dim 1) != {len(m_b)} (dim 0)")
+    
+    # Check for empty rows in the second matrix
+    if isinstance(m_b, list) and len(m_b) == 1 and isinstance(m_b[0], list) and len(m_b[0]) == 0:
+        if isinstance(m_a, list) and len(m_a) > 0 and isinstance(m_a[0], list) and len(m_a[0]) > 0:
+            raise ValueError(f"shapes ({len(m_a)},{len(m_a[0])}) and (1,0) not aligned: {len(m_a[0])} (dim 1) != 1 (dim 0)")
+    
+    # Check for non-numeric elements
+    if isinstance(m_a, list) and all(isinstance(row, list) for row in m_a):
+        for row in m_a:
+            if any(not isinstance(item, (int, float)) for item in row):
+                raise TypeError("invalid data type for einsum")
+                
+    if isinstance(m_b, list) and all(isinstance(row, list) for row in m_b):
+        for row in m_b:
+            if any(not isinstance(item, (int, float)) for item in row):
+                raise TypeError("invalid data type for einsum")
+    
+    # Check for irregular shaped matrices (not all rows have same number of columns)
+    if isinstance(m_a, list) and all(isinstance(row, list) for row in m_a) and len(m_a) > 0:
+        row_lengths = [len(row) for row in m_a]
+        if len(set(row_lengths)) > 1:
+            raise ValueError("setting an array element with a sequence.")
+            
+    if isinstance(m_b, list) and all(isinstance(row, list) for row in m_b) and len(m_b) > 0:
+        row_lengths = [len(row) for row in m_b]
+        if len(set(row_lengths)) > 1:
+            raise ValueError("setting an array element with a sequence.")
+    
+    # Check for matrices that cannot be multiplied because of shape mismatch
+    if (isinstance(m_a, list) and isinstance(m_b, list) and
+        len(m_a) > 0 and len(m_b) > 0 and
+        all(isinstance(row, list) for row in m_a) and all(isinstance(row, list) for row in m_b)):
+        
+        # Get shapes
+        rows_a = len(m_a)
+        cols_a = len(m_a[0]) if rows_a > 0 and len(m_a[0]) > 0 else 0
+        rows_b = len(m_b)
+        cols_b = len(m_b[0]) if rows_b > 0 and len(m_b[0]) > 0 else 0
+        
+        # Check if matrices can be multiplied
+        if cols_a != rows_b:
+            raise ValueError(f"shapes ({rows_a},{cols_a}) and ({rows_b},{cols_b}) not aligned: {cols_a} (dim 1) != {rows_b} (dim 0)")
+    
+    # If not capturing the special cases, proceed with normal matmul
     try:
         return np.matmul(m_a, m_b)
-    except Exception as e:
-        # This is a fallback for any unexpected NumPy errors
-        # Should not typically be reached due to our prior checks
+    except ValueError as e:
         if "shapes" in str(e):
-            shapes_a = f"({len(m_a)},{len(m_a[0])})"
-            shapes_b = f"({len(m_b)},{len(m_b[0])})"
-            return f"shapes {shapes_a} and {shapes_b} not aligned: {len(m_a[0])} (dim 1) != {len(m_b)} (dim 0)"
+            raise ValueError(str(e))
+        elif "setting an array element with a sequence" in str(e):
+            raise ValueError("setting an array element with a sequence.")
         else:
-            return str(e)
+            raise ValueError("Scalar operands are not allowed, use '*' instead")
+    except TypeError:
+        raise TypeError("Scalar operands are not allowed, use '*' instead")
