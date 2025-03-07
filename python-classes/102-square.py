@@ -41,31 +41,37 @@ class Square:
         return self.__size ** 2
 
     def __eq__(self, other):
-        """Compare equality based on square area."""
-        if isinstance(other, Square):
-            return self.area() == other.area()
-        return False
+        """
+        Compare equality based on square area.
+        """
+        return isinstance(other, Square) and self.area() == other.area()
 
     def __ne__(self, other):
-        """Compare inequality based on square area."""
+        """
+        Compare inequality based on square area.
+        """
         return not self.__eq__(other)
 
     def __lt__(self, other):
-        """Compare if this square is smaller than another based on area."""
-        if isinstance(other, Square):
-            return self.area() < other.area()
-        return False
+        """
+        Compare if this square is smaller than another based on area.
+        """
+        return isinstance(other, Square) and self.area() < other.area()
 
     def __le__(self, other):
-        """Compare if this square is smaller or equal to another based on area."""
+        """
+        Compare if this square is smaller or equal to another based on area.
+        """
         return self.__lt__(other) or self.__eq__(other)
 
     def __gt__(self, other):
-        """Compare if this square is greater than another based on area."""
-        if isinstance(other, Square):
-            return self.area() > other.area()
-        return False
+        """
+        Compare if this square is greater than another based on area.
+        """
+        return isinstance(other, Square) and self.area() > other.area()
 
     def __ge__(self, other):
-        """Compare if this square is greater or equal to another based on area."""
+        """
+        Compare if this square is greater or equal to another based on area.
+        """
         return self.__gt__(other) or self.__eq__(other)
