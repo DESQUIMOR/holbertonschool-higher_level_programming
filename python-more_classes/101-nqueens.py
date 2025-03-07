@@ -9,8 +9,7 @@ import sys
 def is_safe(board, row, col):
     """Check if a queen can be placed on board[row][col]."""
     for i in range(row):
-        if board[i] == col or board[i] - i == col - row 
-            or board[i] + i == col + row:
+        if board[i] == col or board[i] - i == col - row or board[i] + i == col + row:
             return False
     return True
 
