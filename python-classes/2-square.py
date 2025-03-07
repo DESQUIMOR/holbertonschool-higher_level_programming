@@ -3,24 +3,12 @@
 
 
 class Square:
-    """ Square class defined by geometric shap
-
-        Attributes:
-            size (int): Size of square
-    """
+    """Defines a square by its size."""
+    
     def __init__(self, size=0):
-        """
-        Initialize methode
-
-        Args:
-            size (int): int to assign to square size
-        Raises:
-            TypeError: if size is not int
-            ValueError: size less than 0
-        """
-        if type(size) != int:
+        """Initializes the square with an optional size."""
+        if not isinstance(size, int):
             raise TypeError("size must be an integer")
-        elif size < 0:
+        if size < 0:
             raise ValueError("size must be >= 0")
-        else:
-            self.__size = size
+        self.__size = size
