@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Example Google style docstrings.
+Module Square
 """
 
 
@@ -35,7 +35,7 @@ class Square:
         Returns:
             int: The area of the square.
         """
-        return self.__size * self.__size
+        return self.__size ** 2
 
     @property
     def size(self):
