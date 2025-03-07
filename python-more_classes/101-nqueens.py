@@ -5,17 +5,22 @@ Solves the N Queens puzzle using backtracking.
 
 import sys
 
-
 def is_safe(board, row, col):
-    """Check if a queen can be placed on board[row][col]."""
+    """
+    Check if a queen can be placed on board[row][col].
+    """
     for i in range(row):
-        if board[i] == col or board[i] - i == col - row or board[i] + i == col + row:
+        if (board[i] == col or
+                board[i] - i == col - row or
+                board[i] + i == col + row):
             return False
     return True
 
 
 def solve_nqueens(N, row=0, board=[]):
-    """Backtracking function to solve N Queens."""
+    """
+    Backtracking function to solve N Queens.
+    """
     if row == N:
         print([[i, board[i]] for i in range(N)])
         return
@@ -26,7 +31,9 @@ def solve_nqueens(N, row=0, board=[]):
 
 
 def main():
-    """Main function to parse arguments and initiate solving."""
+    """
+    Main function to parse arguments and initiate solving.
+    """
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
@@ -42,6 +49,7 @@ def main():
         sys.exit(1)
 
     solve_nqueens(N)
+
 
 if __name__ == "__main__":
     main()
