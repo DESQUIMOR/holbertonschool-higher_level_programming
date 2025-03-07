@@ -5,6 +5,7 @@ Solves the N Queens puzzle using backtracking.
 
 import sys
 
+
 def is_safe(board, row, col):
     """
     Check if a queen can be placed on board[row][col].
