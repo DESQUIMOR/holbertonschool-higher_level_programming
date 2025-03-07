@@ -20,7 +20,7 @@ class Square:
         Args:
             size (int): The size of the square, must be a non-negative integer.
             position (tuple): A tuple of two positive integers representing the position.
-        
+
         Raises:
             TypeError: If size is not an integer or position is not a tuple of two positive integers.
             ValueError: If size is negative.
@@ -54,7 +54,7 @@ class Square:
 
         Args:
             value (int): The new size of the square.
-        
+
         Raises:
             TypeError: If value is not an integer.
             ValueError: If value is negative.
@@ -82,7 +82,7 @@ class Square:
 
         Args:
             value (tuple): The new position of the square.
-        
+
         Raises:
             TypeError: If value is not a tuple of two positive integers.
         """
