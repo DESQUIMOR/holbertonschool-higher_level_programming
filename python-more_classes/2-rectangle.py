@@ -41,7 +41,7 @@ class Rectangle:
 
         Args:
             value (int): A value to set
-        
+
         Raises:
             TypeError: When value is not int
             ValueError: When value is less than 0
@@ -69,7 +69,7 @@ class Rectangle:
 
         Args:
             value (int): Value to be set
-        
+
         Raises:
             TypeError: When value is not int
             ValueError: When value is less than 0
