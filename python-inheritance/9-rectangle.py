@@ -28,4 +28,4 @@ class Rectangle(BaseGeometry):
         """
             Rectangle Descreption
         """
-        return("[Rectangle] {}/{}".format(self.__width, self.__height))
+        return ("[Rectangle] {}/{}".format(self.__width, self.__height))
