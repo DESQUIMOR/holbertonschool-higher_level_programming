@@ -1,7 +1,14 @@
+#!/usr/bin/python3
+"""
+Module for defining a singly linked list.
+"""
+
+
 class Node:
     """
     Defines a node of a singly linked list.
     """
+
     def __init__(self, data, next_node=None):
         """
         Initialize a node.
@@ -51,6 +58,7 @@ class SinglyLinkedList:
     """
     Defines a singly linked list.
     """
+
     def __init__(self):
         """Initialize an empty singly linked list."""
         self.__head = None
@@ -68,7 +76,8 @@ class SinglyLinkedList:
             self.__head = new_node
         else:
             current = self.__head
-            while current.next_node is not None and current.next_node.data < value:
+            while (current.next_node is not None and
+                   current.next_node.data < value):
                 current = current.next_node
             new_node.next_node = current.next_node
             current.next_node = new_node
