@@ -35,7 +35,5 @@ class Rectangle(Shape):
 
 def shape_info(shape: Shape):
     """Function to print area and perimeter of a shape using duck typing"""
-    if not isinstance(shape, Shape):
-        raise TypeError("Expected an instance of Shape")
-    print(f"Area: {shape.area():.5f}")
-    print(f"Perimeter: {shape.perimeter():.5f}")
+    print(f"Area: {shape.area():.6f}")
+    print(f"Perimeter: {shape.perimeter():.6f}")
