@@ -1,62 +1,100 @@
 #!/usr/bin/env python3
+from abc import ABC, abstractmethod
+import math
 
-class VerboseList(list):
+class Shape(ABC):
     """
-    A list subclass that prints notification messages when items are added or removed.
-    Overrides append, extend, remove, and pop methods to add verbosity.
+    Abstract base class for shapes.
+    Any class that inherits from Shape must implement area and perimeter methods.
     """
-    
-    def append(self, item):
+    @abstractmethod
+    def area(self):
         """
-        Add an item to the end of the list and print a notification.
+        Calculate and return the area of the shape.
+        """
+        pass
+    
+    @abstractmethod
+    def perimeter(self):
+        """
+        Calculate and return the perimeter of the shape.
+        """
+        pass
+
+class Circle(Shape):
+    """
+    Circle implementation of Shape.
+    """
+    def __init__(self, radius):
+        """
+        Initialize a Circle with the given radius.
         
         Args:
-            item: The item to be added to the list
+            radius (float): The radius of the circle
         """
-        super().append(item)
-        print(f"Added [{item}] to the list.")
+        self.radius = radius
     
-    def extend(self, iterable):
+    def area(self):
         """
-        Extend the list with an iterable and print a notification.
+        Calculate the area of the circle using πr².
         
-        Args:
-            iterable: The iterable whose items will be added to the list
-        """
-        # Convert to list first to get the count
-        items = list(iterable)
-        super().extend(items)
-        print(f"Extended the list with [{len(items)}] items.")
-    
-    def remove(self, item):
-        """
-        Remove the first occurrence of an item from the list and print a notification.
-        
-        Args:
-            item: The item to be removed
-        """
-        # Check if the item exists before attempting to remove
-        if item in self:
-            print(f"Removed [{item}] from the list.")
-            super().remove(item)
-        else:
-            print(f"Cannot remove [{item}]: item not in list.")
-    
-    def pop(self, index=-1):
-        """
-        Remove and return an item at the given index and print a notification.
-        If no index is specified, removes and returns the last item.
-        
-        Args:
-            index: The index of the item to be removed (default: -1, the last item)
-            
         Returns:
-            The removed item
+            float: The area of the circle
         """
-        try:
-            item = self[index]  # Get the item before removing
-            print(f"Popped [{item}] from the list.")
-            return super().pop(index)
-        except IndexError:
-            print("Cannot pop: list is empty or index out of range.")
-            raise  # Re-raise the exception
+        return math.pi * self.radius ** 2
+    
+    def perimeter(self):
+        """
+        Calculate the perimeter (circumference) of the circle using 2πr.
+        
+        Returns:
+            float: The perimeter of the circle
+        """
+        return 2 * math.pi * self.radius
+
+class Rectangle(Shape):
+    """
+    Rectangle implementation of Shape.
+    """
+    def __init__(self, width, height):
+        """
+        Initialize a Rectangle with the given width and height.
+        
+        Args:
+            width (float): The width of the rectangle
+            height (float): The height of the rectangle
+        """
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        """
+        Calculate the area of the rectangle using width × height.
+        
+        Returns:
+            float: The area of the rectangle
+        """
+        return self.width * self.height
+    
+    def perimeter(self):
+        """
+        Calculate the perimeter of the rectangle using 2(width + height).
+        
+        Returns:
+            float: The perimeter of the rectangle
+        """
+        return 2 * (self.width + self.height)
+
+def shape_info(shape):
+    """
+    Print information about a shape, using duck typing.
+    
+    This function demonstrates duck typing by not checking the type of the object,
+    but simply using its methods. As long as the object has area() and perimeter()
+    methods, it will work with this function.
+    
+    Args:
+        shape: Any object that has area() and perimeter() methods
+    """
+    print(f"Area: {shape.area()}")
+    print(f"Perimeter: {shape.perimeter()}")
