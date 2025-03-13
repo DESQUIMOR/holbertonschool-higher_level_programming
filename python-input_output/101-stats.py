@@ -40,31 +40,31 @@ try:
         try:
             # Split the line by spaces
             parts = line.split()
-            
+
             # Make sure we have enough parts to analyze
             if len(parts) >= 7:
                 # Status code should be the 8th element from the end
                 status_code = parts[-2]
-                
+
                 # File size should be the last element
                 file_size = int(parts[-1])
-                
+
                 # Update metrics
                 total_size += file_size
                 if status_code in status_codes:
                     status_codes[status_code] += 1
-            
+
             # Increment count regardless of parsing success
             line_count += 1
-            
+
             # Print stats every 10 lines
             if line_count % 10 == 0:
                 print_stats(total_size, status_codes)
-        
+
         except (IndexError, ValueError):
             # Continue even if we can't parse a line
             continue
-    
+
     # Print final stats if not a multiple of 10
     if line_count % 10 != 0:
         print_stats(total_size, status_codes)
