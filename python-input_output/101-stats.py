@@ -37,7 +37,7 @@ if __name__ == "__main__":
             parts = line.split('"')
             if len(parts) >= 2:
                 try:
-                    # Get status code and file size from the part 
+                    # Get status code and file size from the part
                     info = parts[1].split()
                     if len(info) >= 2 and "GET /projects/260 HTTP/1.1" in parts[1]:
                         try:
