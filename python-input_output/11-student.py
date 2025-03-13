@@ -23,7 +23,7 @@ class Student():
         """
         if type(attrs) is list and all([type(x) == str for x in attrs]):
             return {k: v for k, v in self.__dict__.items() if k in attrs}
-        return(self.__dict__)
+        return (self.__dict__)
 
     def reload_from_json(self, json):
         """
