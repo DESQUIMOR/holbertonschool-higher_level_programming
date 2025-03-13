@@ -8,7 +8,6 @@ This script reads stdin line by line and computes metrics:
 """
 
 import sys
-import re
 
 
 def print_stats(total_size, status_codes):
@@ -30,20 +29,44 @@ if __name__ == "__main__":
                     '403': 0, '404': 0, '405': 0, '500': 0}
     line_count = 0
     
-    pattern = r'^\S+ - \[.+\] "GET /projects/260 HTTP/1\.1" (\d+) (\d+)$'
-    
     try:
         for line in sys.stdin:
             line_count += 1
-            match = re.match(pattern, line.strip())
-            if match:
-                status_code = match.group(1)
-                file_size = int(match.group(2))
-                
-                # Update metrics
-                total_size += file_size
-                if status_code in status_codes:
-                    status_codes[status_code] += 1
+            
+            # Use simple string splitting instead of regex
+            parts = line.split('"')
+            if len(parts) >= 2:
+                try:
+                    # Get status code and file size from the part after the GET section
+                    info = parts[1].split()
+                    if len(info) >= 2 and "GET /projects/260 HTTP/1.1" in parts[1]:
+                        try:
+                            # The last two elements should be status code and file size
+                            http_info = parts[2].strip().split()
+                            if len(http_info) >= 2:
+                                status_code = http_info[0]
+                                file_size = int(http_info[1])
+                                
+                                # Update metrics
+                                total_size += file_size
+                                if status_code in status_codes:
+                                    status_codes[status_code] += 1
+                        except (IndexError, ValueError):
+                            # Try alternative parsing if the above fails
+                            try:
+                                line_parts = line.split()
+                                if len(line_parts) >= 9:
+                                    status_code = line_parts[-2]
+                                    file_size = int(line_parts[-1])
+                                    
+                                    # Update metrics
+                                    total_size += file_size
+                                    if status_code in status_codes:
+                                        status_codes[status_code] += 1
+                            except (IndexError, ValueError):
+                                pass
+                except (IndexError, ValueError):
+                    pass
             
             # Print stats every 10 lines
             if line_count % 10 == 0:
