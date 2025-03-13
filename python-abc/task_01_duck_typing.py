@@ -1,39 +1,37 @@
+#!/usr/bin/env python3
 from abc import ABC, abstractmethod
 import math
 
 class Shape(ABC):
     @abstractmethod
     def area(self):
-        """Method to calculate the area of the shape"""
         pass
-
+    
     @abstractmethod
     def perimeter(self):
-        """Method to calculate the perimeter of the shape"""
         pass
 
 class Circle(Shape):
-    def __init__(self, radius: float):
+    def __init__(self, radius):
         self.radius = radius
-
-    def area(self) -> float:
+    
+    def area(self):
         return math.pi * self.radius ** 2
-
-    def perimeter(self) -> float:
+    
+    def perimeter(self):
         return 2 * math.pi * self.radius
 
 class Rectangle(Shape):
-    def __init__(self, width: float, height: float):
+    def __init__(self, width, height):
         self.width = width
         self.height = height
-
-    def area(self) -> float:
+    
+    def area(self):
         return self.width * self.height
-
-    def perimeter(self) -> float:
+    
+    def perimeter(self):
         return 2 * (self.width + self.height)
 
-def shape_info(shape: Shape):
-    """Function to print area and perimeter of a shape using duck typing"""
-    print(f"Area: {shape.area():.14f}")
-    print(f"Perimeter: {shape.perimeter():.14f}")
+def shape_info(shape):
+    print(f"Area: {shape.area()}")
+    print(f"Perimeter: {shape.perimeter()}")
