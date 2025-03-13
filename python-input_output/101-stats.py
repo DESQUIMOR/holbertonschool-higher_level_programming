@@ -2,7 +2,7 @@
 """Module that calculates metrics from HTTP access log entries.
 
 This script reads stdin line by line and computes metrics:
-- Input format: "<IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>"
+- Input format: "<IP Address> - [<date>]"
 - Prints statistics every 10 lines and after a keyboard interruption (CTRL + C)
 - Shows total file size and number of lines by status code in ascending order
 """
@@ -12,7 +12,7 @@ import sys
 
 def print_stats(total_size, status_codes):
     """Print accumulated statistics.
-    
+
     Args:
         total_size (int): The total file size
         status_codes (dict): Dictionary with status codes and their counts
@@ -28,11 +28,11 @@ if __name__ == "__main__":
     status_codes = {'200': 0, '301': 0, '400': 0, '401': 0,
                     '403': 0, '404': 0, '405': 0, '500': 0}
     line_count = 0
-    
+
     try:
         for line in sys.stdin:
             line_count += 1
-            
+
             # Use simple string splitting instead of regex
             parts = line.split('"')
             if len(parts) >= 2:
@@ -46,7 +46,7 @@ if __name__ == "__main__":
                             if len(http_info) >= 2:
                                 status_code = http_info[0]
                                 file_size = int(http_info[1])
-                                
+
                                 # Update metrics
                                 total_size += file_size
                                 if status_code in status_codes:
@@ -58,7 +58,7 @@ if __name__ == "__main__":
                                 if len(line_parts) >= 9:
                                     status_code = line_parts[-2]
                                     file_size = int(line_parts[-1])
-                                    
+
                                     # Update metrics
                                     total_size += file_size
                                     if status_code in status_codes:
@@ -67,11 +67,11 @@ if __name__ == "__main__":
                                 pass
                 except (IndexError, ValueError):
                     pass
-            
+
             # Print stats every 10 lines
             if line_count % 10 == 0:
                 print_stats(total_size, status_codes)
-                
+
     except KeyboardInterrupt:
         pass
     finally:
