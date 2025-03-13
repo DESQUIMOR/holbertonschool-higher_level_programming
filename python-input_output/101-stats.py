@@ -39,8 +39,7 @@ if __name__ == "__main__":
                 try:
                     # Get status code and file size from the part
                     info = parts[1].split()
-                    if len(info) >= 2 and
-                        "GET /projects/260 HTTP/1.1" in parts[1]:
+                    if len(info) >= 2 and "GET /projects/260 HTTP/1.1" in parts[1]:
                         try:
                             # The last two elements should be status
                             http_info = parts[2].strip().split()
