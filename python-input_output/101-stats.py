@@ -43,13 +43,14 @@ def main():
     status_counts = {}
     valid_statuses = {200, 301, 400, 401, 403, 404, 405, 500}
     line_count = 0
-
+    
     try:
         for line in sys.stdin:
-            total_size = process_line(line, total_size, status_counts, valid_statuses)
+            total_size = process_line(line.strip(), total_size, status_counts, valid_statuses)
             line_count += 1
             if line_count % 10 == 0:
                 print_stats(total_size, status_counts)
+        print_stats(total_size, status_counts)
     except KeyboardInterrupt:
         print_stats(total_size, status_counts)
         raise
