@@ -23,18 +23,17 @@ def main():
         '403': 0, '404': 0, '405': 0, '500': 0
     }
     line_count = 0
-
     # Regular expression pattern for parsing log lines
     log_pattern = r'^\S+ - \[\S+\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)$'
-
+    
     def signal_handler(sig, frame):
         """Handle CTRL+C interruption"""
         print_stats(total_size, status_codes)
         sys.exit(0)
-
+    
     # Register the signal handler for keyboard interruption
     signal.signal(signal.SIGINT, signal_handler)
-
+    
     try:
         for line in sys.stdin:
             try:
