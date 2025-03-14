@@ -37,7 +37,7 @@ class Circle(Shape):
         Returns:
             float: The area of the circle
         """
-        return math.pi * self.radius ** 2
+        return math.pi * abs(self.radius) ** 2
 
     def perimeter(self) -> float:
         """Calculate the perimeter (circumference) of the circle.
@@ -45,7 +45,7 @@ class Circle(Shape):
         Returns:
             float: The perimeter of the circle
         """
-        return 2 * math.pi * self.radius
+        return 2 * math.pi * abs(self.radius)
 
 
 class Rectangle(Shape):
