@@ -52,6 +52,7 @@ def add_user():
     Expects a JSON object with 'username', 'name', 'age', and 'city'.
     Returns a confirmation message with the added user's data.
     If 'username' is not provided, returns a 400 error.
+    If 'username' already exists, returns a 400 error with an appropriate message.
     """
     data = request.get_json()
     if not data or "username" not in data:
@@ -76,3 +77,4 @@ def add_user():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
