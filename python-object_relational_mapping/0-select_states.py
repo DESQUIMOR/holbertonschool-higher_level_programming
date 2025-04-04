@@ -1,39 +1,20 @@
 #!/usr/bin/python3
-"""
-Script that lists all states from the database hbtn_0e_0_usa.
+"""0x0F. Python - Object-relational mapping - task 0. Get all states"""
 
-It connects to a MySQL database using MySQLdb and retrieves all
-rows from the 'states' table, displaying them in ascending order
-by states.id.
-"""
+if __name__ == '__main__':
+    import sys
+    import MySQLdb
 
-import MySQLdb
-import sys
+    if len(sys.argv) != 4:
+        sys.exit('Use: 0-select_states.py <mysql username> <mysql password>'
+                 ' <database name>')
 
-
-def list_states(username, password, dbname):
-    """
-    Connects to the MySQL database and prints all states in ascending order by ID.
-
-    Args:
-        username (str): MySQL username
-        password (str): MySQL password
-        dbname (str): Name of the database
-    """
-    db = MySQLdb.connect(
-        host="localhost",
-        port=3306,
-        user=username,
-        passwd=password,
-        db=dbname
-        )
-    cur = db.cursor()
+    conn = MySQLdb.connect(host='localhost', port=3306, user=sys.argv[1],
+                           passwd=sys.argv[2], db=sys.argv[3], charset='utf8')
+    cur = conn.cursor()
     cur.execute("SELECT * FROM states ORDER BY id ASC")
-    rows = cur.fetchall()
-    for row in rows:
+    query_rows = cur.fetchall()
+    for row in query_rows:
         print(row)
     cur.close()
-    db.close()
-
-if __name__ == "__main__":
-    list_states(sys.argv[1], sys.argv[2], sys.argv[3])
+    conn.close()
