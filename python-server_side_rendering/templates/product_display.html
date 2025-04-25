@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
-  </head>
-  <body>
-    <header>{% include 'header.html' %}</header>
-    <main>
-      <h1>Product List</h1>
-      {% if error %}
-      <p>{{ error }}</p>
-      {% elif products %}
-      <table>
-        <thead>
-          <tr>
+</head>
+
+<body>
+    <h1>Products</h1>
+    {% if error %}
+    <p>{{ error }}</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Category</th>
             <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for product in products %}
-          <tr>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.category }}</td>
             <td>{{ product.price }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-    </main>
-    <footer>{% include 'footer.html' %}</footer>
-  </body>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+
 </html>

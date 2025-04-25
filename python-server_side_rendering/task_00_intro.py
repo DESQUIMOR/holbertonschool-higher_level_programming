@@ -1,59 +1,35 @@
-#!/usr/bin/python3
-import os
-"""Program defines function that generates personalized invitation files
-"""
+"""Module containing python script for sending invitations"""
+from os.path import exists
 
-def generate_invitations(template, attendees):
-    """Function generates invitations
 
-    Args:
-        template (str)
-        attendees (list)
-
-    Returns:
-        _type_: _description_
-    """
-
-    if not isinstance(template, str) or template is None: 
-        print("Template is supposed to be a string")
-        return
-    
-    if not isinstance(attendees, list) or attendees is None:
-        print("Attendees is supposed to be a list")
-        return
+def generate_invitations(template, attendees_list):
+    """Function for generating invitations"""
 
     if not template:
-        print("Template is empty, no output files generated.")
+        print("ERROR: template cannot be empty")
         return
-    
-    if not attendees:
-        print("No data provided, no output files generated.")
+
+    if not attendees_list:
+        print("ERROR: attendees_list cannot be empty")
         return
-    
-    
-    try:
-        for x, attendee in enumerate(attendees, start=1):
-            attendee_name = attendee.get("name") or "N/A"
-            attendee_title = attendee.get("event_title") or "N/A"
-            attendee_date = attendee.get("event_date") or "N/A"
-            attendee_location = attendee.get("event_location") or "N/A"
 
-
-            replace_name = "{name}"
-            replace_title = "{event_title}"
-            replace_date = "{event_date}"
-            replace_location = "{event_location}"
-
-            replace_text = template.replace(replace_name, attendee_name).replace(replace_title, attendee_title).replace(replace_date, attendee_date).replace(replace_location, attendee_location)
-            current_file = f"output_{x}.txt"
-
-            if os.path.exists(current_file):
-                print(f"{current_file} already exists")
-                continue
-            
-            with open(current_file, 'w') as output:
-                output.write(replace_text)
-
-    except Exception as e:
-        print(f"{e} found")
+    if not isinstance(template, str):
+        print("ERROR: template must be a string")
         return
+
+    if (not isinstance(attendees_list, list) or
+            not all(isinstance(item, dict) for item in attendees_list)):
+        print("ERROR: attendees_list must be a list of dictionaries")
+        return
+
+    for index, attendee in enumerate(attendees_list, start=1):
+        template_schema = template
+        for key in ['name', 'event_title', 'event_date', 'event_location']:
+            placeholder = "{" + f"{key}" + "}"
+            value = attendee.get(key) or "N/A"
+            template_schema = template_schema.replace(placeholder, value)
+        if not exists(f"output_{index}.txt"):
+            with open(f"output_{index}.txt", "w") as file:
+                file.write(template_schema)
+        else:
+            print("ERROR: file already exists")
